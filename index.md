@@ -2,23 +2,62 @@
 layout: default
 ---
 
-Página del proyecto **FIUBER**, TP de Taller de Programación 2 (2do. cuatrimestre de 2022), FIUBA.
+Taller de Programación 2, 2do. cuatrimestre de 2022, FIUBA.
 
 # Introducción
+
+En este trabajo práctico se desarrolló **FIUBER**, una plataforma que conecta pasajeros con choferes en tiempo real.  
+El proyecto consiste en una aplicación mobile y un backoffice web para administradores.
 
 * * *
 
 # Arquitectura
 
-![image](https://user-images.githubusercontent.com/43656633/206753279-0471c8ec-b024-4b49-a679-ef611e830318.png)
+La aplicación mobile fue desarrollada en React Native para el sistema operativo Android, y para el backoffice
+se utilizó React. Ambas aplicaciones hacen uso de Firebase para el registro y autenticación de usuarios.
+
+Para la construcción del backend de la plataforma, se diseñó una arquitectura basada en microservicios como se puede
+observar en el siguiente diagrama:
+
+![image](https://user-images.githubusercontent.com/43656633/206757211-2110b8c6-ba94-4de5-901e-32de7e932ef4.png)
+
+Cada microservicio expone sus funcionalidades mediante una API, la cual implementa autorización por token mediante
+la librería de Firebase Admin. Estos microservicios fueron implementados siguiendo el principio de única responsabilidad
+y son los siguientes:
+
+- [Trips](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Trips): Creación, actualización y cotización de viajes.
+- [Ratings](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Ratings): Calificación de pasajeros y choferes.
+- [Metrics](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Metrics): Generación de eventos para métricas.
+- [Notification PIN](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Notification-PIN): Envío de códigos de verificación de usuarios.
+- [Wallet](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Wallet): Pago y cobro de viajes.
+- [Users](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Users): Gestión de usuarios para administradores.
+
+Cada servicio contiene en su repositorio las instrucciones de instalación y uso. Además cuentan con un archivo `Dockerfile` que
+permite ejecutarlos sin necesidad de tener las dependencias instaladas.
 
 * * *
 
-# Pruebas
+# CI-CD
 
-* * *
+Cada repositorio cuenta con uno o más workflows de integración continua usando la plataforma de GitHub Actions.
 
-# Despliegue
+En primera instancia, cuando se abre un pull request a la rama de `main`, se corren todas las pruebas para asegurar
+la integridad del código y evitar errores en el ambiente productivo.
+
+Una vez que las pruebas ejecutaron correctamente y no se reportaron errores, el siguiente paso es realizar
+el merge a `main`. En este paso se ejecuta el despliegue, en el caso de la aplicación mobile, este
+consiste en la generación del archivo `.apk`.
+
+![image](https://user-images.githubusercontent.com/43656633/206767428-b285817a-ac5b-46e0-93de-bc06e664a194.png)
+
+En el caso de los servicios backend, el despliegue se realiza en kubernetes, para el cual se eligió la plataforma
+Okteto. Para esto, cada repositorio cuenta con un archivo `kubernetes.yml` que define los recursos a
+crear en el clúster, los cuales son un servidor web, y en los casos que corresponda, un servidor de base de datos
+y un volumen de datos. Este último recurso asegura la persistencia de los datos a través de todos los despliegues.
+Por cada servicio, la correspondiente API es expuesta hacia el exterior del clúster mediante un endpoint
+proporcionado por Okteto, mientras que el resto de los servicios sólo es accesible desde el interior del mismo.
+
+![image](https://user-images.githubusercontent.com/43656633/206767003-0e21fb5f-6b74-4894-a1df-bb8559d0b068.png)
 
 * * *
 
