@@ -2,19 +2,21 @@
 layout: default
 ---
 
-Taller de Programación 2, 2do. cuatrimestre de 2022, FIUBA.
+TP de Taller de Programación 2, 2do. cuatrimestre de 2022 - FIUBA.
 
 # Introducción
 
-En este trabajo práctico se desarrolló **FIUBER**, una plataforma que conecta pasajeros con choferes en tiempo real.  
-El proyecto consiste en una aplicación mobile y un backoffice web para administradores.
+En este trabajo práctico se desarrolló **FIUBER**, una plataforma que conecta pasajeros con choferes en tiempo real,
+la cual consiste en una aplicación mobile, un backoffice web para administradores y un conjunto de servicios backend.
+Los repositorios de código pueden ser encontrados en la [GitHub Organization](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7) del proyecto.
 
 * * *
 
 # Arquitectura
 
-La aplicación mobile fue desarrollada en React Native para el sistema operativo Android, y para el backoffice
-se utilizó React. Ambas aplicaciones hacen uso de Firebase para el registro y autenticación de usuarios.
+La aplicación mobile fue desarrollada en [React Native](https://reactnative.dev/) para el sistema operativo **Android**, y para el backoffice
+se utilizó [React](https://es.reactjs.org/). Ambas aplicaciones hacen uso de [Firebase](https://firebase.google.com/?hl=es) para el registro
+y autenticación de usuarios.
 
 Para la construcción del backend de la plataforma, se diseñó una arquitectura basada en microservicios como se puede
 observar en el siguiente diagrama:
@@ -22,15 +24,15 @@ observar en el siguiente diagrama:
 ![image](https://user-images.githubusercontent.com/43656633/206757211-2110b8c6-ba94-4de5-901e-32de7e932ef4.png)
 
 Cada microservicio expone sus funcionalidades mediante una API, la cual implementa autorización por token mediante
-la librería de Firebase Admin. Estos microservicios fueron implementados siguiendo el principio de única responsabilidad
-y son los siguientes:
+la librería de [Firebase Admin](https://firebase.google.com/docs/admin/setup).
+Estos microservicios fueron implementados siguiendo el principio de responsabilidad única y son los siguientes:
 
-- [Trips](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Trips): Creación, actualización y cotización de viajes.
-- [Ratings](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Ratings): Calificación de pasajeros y choferes.
-- [Metrics](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Metrics): Generación de eventos para métricas.
-- [Notification PIN](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Notification-PIN): Envío de códigos de verificación de usuarios.
-- [Wallet](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Wallet): Pago y cobro de viajes.
-- [Users](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7/FIUBER-Users): Gestión de usuarios para administradores.
+- **Trips**: Creación, actualización y cotización de viajes.
+- **Ratings**: Calificación de pasajeros y choferes.
+- **Metrics**: Generación de eventos para métricas.
+- **Notification PIN**: Envío de códigos de verificación de usuarios.
+- **Wallet**: Pago y cobro de viajes.
+- **Users**: Gestión de usuarios para administradores.
 
 Cada servicio contiene en su repositorio las instrucciones de instalación y uso. Además cuentan con un archivo `Dockerfile` que
 permite ejecutarlos sin necesidad de tener las dependencias instaladas.
@@ -39,7 +41,7 @@ permite ejecutarlos sin necesidad de tener las dependencias instaladas.
 
 # CI-CD
 
-Cada repositorio cuenta con uno o más workflows de integración continua usando la plataforma de GitHub Actions.
+Cada repositorio cuenta con uno o más workflows de integración continua usando la plataforma de [GitHub Actions](https://docs.github.com/en/actions).
 
 En primera instancia, cuando se abre un pull request a la rama de `main`, se corren todas las pruebas para asegurar
 la integridad del código y evitar errores en el ambiente productivo.
@@ -54,8 +56,6 @@ En el caso de los servicios backend, el despliegue se realiza en kubernetes, par
 Okteto. Para esto, cada repositorio cuenta con un archivo `kubernetes.yml` que define los recursos a
 crear en el clúster, los cuales son un servidor web, y en los casos que corresponda, un servidor de base de datos
 y un volumen de datos. Este último recurso asegura la persistencia de los datos a través de todos los despliegues.
-Por cada servicio, la correspondiente API es expuesta hacia el exterior del clúster mediante un endpoint
-proporcionado por Okteto, mientras que el resto de los servicios sólo es accesible desde el interior del mismo.
 
 ![image](https://user-images.githubusercontent.com/43656633/206767003-0e21fb5f-6b74-4894-a1df-bb8559d0b068.png)
 
@@ -64,15 +64,25 @@ proporcionado por Okteto, mientras que el resto de los servicios sólo es accesi
 # Monitoreo
 
 Para el monitoreo de eventos y visualización de métricas de uso de los servicios desplegados en la nube,
-se utilizó la plataforma **Datadog**. Esta plataforma ofrece un servicio de generación de eventos mediante
-el uso de un Agent que corre en el clúster de Okteto. Cada servicio se encarga, mediante la librería correspondiente,
+se utilizó la plataforma [Datadog](https://www.datadoghq.com/). Esta plataforma ofrece un servicio de generación de eventos mediante
+el uso de un *Agent* que corre en el clúster de Okteto. Cada servicio se encarga, mediante la librería correspondiente,
 de enviar los mensajes relacionados a cada request, ya sea a modo informativo o para reportar un error. Luego
 estos mensajes se pueden visualizar como en la siguiente imagen:
 
 ![image](https://user-images.githubusercontent.com/43656633/206869627-7b3e16eb-6caa-413c-8c5b-8445115c8f0a.png)
 
-Esta plataforma permite además el monitoreo de la infraestructura, generando métricas de uso de recursos.
+Esta plataforma permite además el monitoreo de la infraestructura, generando métricas de uso de recursos:
 
 ![image](https://user-images.githubusercontent.com/43656633/206871527-e2277cba-2de9-4dad-ab24-016ef6b2572c.png)
+
+* * *
+
+# Bitácora del proyecto
+
+El detalle de las actividades realizadas para cada entrega se puede encontrar en la siguiente [página](https://github.com/orgs/TallerDeProgramacion2-2022-2c-Grupo7/projects/1/views/8).
+
+* * *
+
+# Análisis postmortem
 
 * * *
