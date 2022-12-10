@@ -8,7 +8,9 @@ TP de Taller de Programación 2, 2do. cuatrimestre de 2022 - FIUBA.
 
 En este trabajo práctico se desarrolló **FIUBER**, una plataforma que conecta pasajeros con choferes en tiempo real,
 la cual consiste en una aplicación mobile, un backoffice web para administradores y un conjunto de servicios backend.
+
 Los repositorios de código pueden ser encontrados en la [GitHub Organization](https://github.com/TallerDeProgramacion2-2022-2c-Grupo7) del proyecto.
+También están disponibles la [Guía de Usuario de FIUBER Mobile](https://tallerdeprogramacion2-2022-2c-grupo7.github.io/FIUBER-Mobile/) y la [Guía de Usuario de FIUBER BackOffice](https://tallerdeprogramacion2-2022-2c-grupo7.github.io/FIUBER-BackOffice/).
 
 * * *
 
@@ -85,4 +87,22 @@ El detalle de las actividades realizadas para cada entrega se puede encontrar en
 
 # Análisis postmortem
 
-* * *
+A continuación se describen algunos inconvenientes encontrados en la realización del proyecto y posibles mejoras o soluciones.
+
+- **API Gateway:** Actualmente cada servicio backend es desplegado en Okteto junto a un recurso de tipo *Ingress* para generar una URL accesible
+desde Internet. De esta forma si se tienen **N** servicios, se tendrían **N** URLs diferentes.
+Esto dificulta el armado de los endpoints a la hora de hacer los requests desde cualquier aplicación.
+Una mejor solución sería tener **N** servicios backend pero un único *Ingress*. De esta forma, funcionaría como un *gateway* y
+sólo sería cuestión de mapear cada servicio a un *path* diferente (por ejemplo Trips a `{{BASE_URL}}/trips` y Ratings a `{{BASE_URL}}/ratings`).
+
+- **Persistencia de datos:** Debido a la limitación del plan gratuito de Okteto de suspender los recursos luego de un período de inactividad, encontramos
+que cada vez que esto sucedía, se perdían los datos guardados en las bases de datos. Lo mismo sucedía con cada actualización
+de recursos ya desplegados mediante los *workflows* de despliegue. Esto dificultó las pruebas ya que requeríamos persistencia
+de los datos para verificar el correcto funcionamiento de los servicios. La solución que implementamos fue desplegar por única vez, por cada
+servicio backend, un **volumen** de datos y luego vincular cada servicio con el volumen correspondiente.
+
+- **Autenticación Firebase:** Tanto la aplicación mobile como el backoffice web manejan la autenticación desde el frontend, usando
+el SDK de Firebase. Esto en principio nos resultó una buena solución, pero al momento de generar los eventos para la base de datos de métricas,
+tuvimos que realizar obligatoriamente un request extra desde el frontend para cada tipo de evento (*login*, *signup*, etc.). Una mejor solución
+sería mover la lógica de la autenticación con Firebase a un servicio backend y realizar ahí mismo el guardado del evento, garantizando de esta
+forma la atomicidad de la operación.
