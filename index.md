@@ -63,4 +63,16 @@ proporcionado por Okteto, mientras que el resto de los servicios sólo es accesi
 
 # Monitoreo
 
+Para el monitoreo de eventos y visualización de métricas de uso de los servicios desplegados en la nube,
+se utilizó la plataforma **Datadog**. Esta plataforma ofrece un servicio de generación de eventos mediante
+el uso de un Agent que corre en el clúster de Okteto. Cada servicio se encarga, mediante la librería correspondiente,
+de enviar los mensajes relacionados a cada request, ya sea a modo informativo o para reportar un error. Luego
+estos mensajes se pueden visualizar como en la siguiente imagen:
+
+![image](https://user-images.githubusercontent.com/43656633/206869627-7b3e16eb-6caa-413c-8c5b-8445115c8f0a.png)
+
+Esta plataforma permite además el monitoreo de la infraestructura, generando métricas de uso de recursos.
+
+![image](https://user-images.githubusercontent.com/43656633/206871527-e2277cba-2de9-4dad-ab24-016ef6b2572c.png)
+
 * * *
