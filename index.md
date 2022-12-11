@@ -59,7 +59,7 @@ Okteto. Para esto, cada repositorio cuenta con un archivo `kubernetes.yml` que d
 crear en el clúster, los cuales son un servidor web, y en los casos que corresponda, un servidor de base de datos
 y un volumen de datos. Este último recurso asegura la persistencia de los datos a través de todos los despliegues.
 
-![image](https://user-images.githubusercontent.com/43656633/206767003-0e21fb5f-6b74-4894-a1df-bb8559d0b068.png)
+![image](https://user-images.githubusercontent.com/43656633/206881025-88e55fea-cb23-4f23-ab92-a3f571da3344.png)
 
 * * *
 
